@@ -23,5 +23,5 @@ python3 tools/gen_symbols.py "$tmpdir/hip_ast.json" "$tmpdir/symbols.txt"
 
 - Build both halves and the probe with `make -j XWIN=/path/to/xwin`. Make tracks include dependencies. Set `OUT` when building outside the source tree and pass that directory to the launcher.
 - Run the [memory probe](README.md#build-and-try-it) after changing the table or launcher. On hosts with a shared GPU scheduler, launch GPU processes through that scheduler. With withgpu, use `"$HOME/withgpu/withgpu" ./run.sh build/hip_probe.exe`.
-- For changes to kernel registration, module loading or callbacks, also run a Windows executable that exercises that specific path. For changes to exports, inspect the built PE DLL with `llvm-readobj --coff-exports`.
+- For changes to kernel registration, module loading or callbacks, use the bundled `make check GPU_ARCH=<target>` for kernel registration and the relevant Windows workload for modules or callbacks. For changes to exports, inspect the built PE DLL with `llvm-readobj --coff-exports`.
 - Keep application-specific tests and fixtures with their application. Keep generated binaries, build trees, MSVC sysroots and machine-specific paths out of the source distribution.

@@ -41,7 +41,8 @@ application needs code compiled for your GPU architecture.
 HipSip provides `amdhip64.dll`, `amdhip64_6.dll` and `amdhip64_7.dll`.
 Compatibility depends on the HIP functions imported by the application and its
 dependencies. The [symbol list](hip_symbols.def) shows the supported entry
-points. For loader errors and tracing, see [Troubleshooting](TESTING.md).
+points. See [Testing HipSip](TESTING.md) for kernel launches, existing Windows test suites,
+PyTorch checks and loader diagnostics.
 
 ## License
 

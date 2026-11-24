@@ -47,9 +47,23 @@ $(OUT)/hip_probe.exe: probe/hip_probe.c $(OUT)/amdhip64.lib | $(OUT)
 	$(xwin)
 	$(CLANG) -O2 -Wall -iquote . -MMD -MP $(WINFLAGS) $< $(OUT)/amdhip64.lib -o $@
 
+ifneq ($(GPU_ARCH),)
+KERNEL_TEST := $(OUT)/test_kernel_launch_$(GPU_ARCH).exe
+$(KERNEL_TEST): tests/kernel_launch.hip $(OUT)/amdhip64.lib | $(OUT)
+	$(xwin)
+	$(ROCM_LLVM)/clang++ $(WINFLAGS) -O2 --rocm-path=$(ROCM_PATH) --offload-arch=$(GPU_ARCH) \
+	    $< -L$(OUT) -o $@
+endif
+
+check: all $(KERNEL_TEST)
+	OUT="$(abspath $(OUT))" ./run.sh "$(OUT)/hip_probe.exe"
+ifneq ($(GPU_ARCH),)
+	OUT="$(abspath $(OUT))" ./run.sh "$(KERNEL_TEST)"
+endif
+
 clean:
 	rm -rf $(OUT)
 
 -include $(wildcard $(OUT)/*.d)
 
-.PHONY: all clean
+.PHONY: all check clean
